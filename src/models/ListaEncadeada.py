@@ -6,20 +6,20 @@ import No
 
 class ListaEncadeada:
     def __init__(self):
-        self.cabeca = None
+        self.no_root = None
 
     def adicionar(self, no, distancia):
         novo_no = No.No(no, distancia)
-        if not self.cabeca:
-            self.cabeca = novo_no
+        if not self.no_root:
+            self.no_root = novo_no
         else:
-            temp = self.cabeca
+            temp = self.no_root
             while temp.proximo:
                 temp = temp.proximo
             temp.proximo = novo_no
 
     def exibir(self):
-        temp = self.cabeca
+        temp = self.no_root
         while temp:
             print(f"{temp.no} (Distância: {temp.distancia})", end=" -> ")
             temp = temp.proximo

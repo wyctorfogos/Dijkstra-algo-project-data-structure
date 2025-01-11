@@ -21,10 +21,12 @@ class Dijkstra:
         self.distancias[origem] = 0
 
         fila = Queue.Queue()
-        fila.enfileirar(origem)
+        fila.add(origem)
 
+        # Verificar se a fila está vazia
         while not fila.esta_vazia():
-            no_atual = fila.desenfileirar()
+            # Remove o último nó da fila
+            no_atual = fila.pop()
             if no_atual in self.nos_visitados:
                 continue
             self.nos_visitados.add(no_atual)
@@ -34,7 +36,8 @@ class Dijkstra:
                 if nova_distancia < self.distancias[vizinho]:
                     self.distancias[vizinho] = nova_distancia
                     self.anterior[vizinho] = no_atual
-                    fila.enfileirar(vizinho)
+                    # Adiciona o nó vizinho na fila
+                    fila.add(vizinho)
 
     def reconstruir_caminho(self, destino):
         caminho = ListaEncadeada.ListaEncadeada()
@@ -45,7 +48,7 @@ class Dijkstra:
         
         # Extraímos os nós da lista encadeada para uma lista normal
         lista_caminho = []
-        temp = caminho.cabeca
+        temp = caminho.no_root
         while temp:
             lista_caminho.append(temp.no)
             temp = temp.proximo
