@@ -2,6 +2,7 @@ import argparse
 from utils.preprocess_text import PROCESSAMENTO_DE_TEXTO
 import models
 from models import Queue, ListaEncadeada, AlgoritmoDjastra
+import time
 
 if __name__ == "__main__":
     # Definir argumentos do terminal
@@ -17,7 +18,9 @@ if __name__ == "__main__":
 
     # Lê o arquivo de entrada
     origem, grafo = PROCESSAMENTO_DE_TEXTO.ler_arquivo_de_entrada(args.entrada)
-
+    # Início da contagem de tempo do processamento 
+    tempo_inicial = time.time()
+    
     # Instancia o algoritmo de Dijkstra
     dijkstra = AlgoritmoDjastra.Dijkstra(grafo)
 
@@ -35,3 +38,5 @@ if __name__ == "__main__":
     PROCESSAMENTO_DE_TEXTO.escrever_saida(args.saida, resultados)
 
     print("Cálculo dos caminhos mínimos concluído!")
+
+    print(f"Tempo total de processamento: {time.time()-tempo_inicial} s\n")
