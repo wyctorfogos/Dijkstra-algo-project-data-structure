@@ -1,7 +1,7 @@
 import argparse
 from utils.preprocess_text import PROCESSAMENTO_DE_TEXTO
 import models
-from models import Queue, ListaEncadeada, AlgoritmoDjastra
+from models import AlgoritmoDjastra, sortPaths
 import time
 
 if __name__ == "__main__":
@@ -32,11 +32,21 @@ if __name__ == "__main__":
     for destino in grafo:
         caminho = dijkstra.reconstruir_caminho(destino)
         distancia = dijkstra.distancias[destino]
-        resultados.append(f"SHORTEST PATH TO {destino}: {' <- '.join(caminho)} (Distance: {distancia:.2f})")
+        
+        # resultados.append(f"SHORTEST PATH TO {destino}: {' <- '.join(caminho)} (Distance: {distancia:.2f})")
+        resultados.append({"destino": destino, "caminho": caminho, "distancia": distancia})
+
+    # Ordenar os resultados antes de escrever no arquivo de saída
+    resultados_ordenados = sortPaths.sort_order_nos(resultados)
+
+    # Criar a lista formatada para escrita no arquivo
+    resultados_formatados = [
+        f"SHORTEST PATH TO {item['destino']}: {' <- '.join(item['caminho'])} (Distance: {item['distancia']:.2f})"
+        for item in resultados_ordenados
+    ]
 
     # Escreve os resultados no arquivo de saída
-    PROCESSAMENTO_DE_TEXTO.escrever_saida(args.saida, resultados)
+    PROCESSAMENTO_DE_TEXTO.escrever_saida(args.saida, resultados_formatados)
 
     print("Cálculo dos caminhos mínimos concluído!")
-
-    print(f"Tempo total de processamento: {time.time()-tempo_inicial} s\n")
+    print(f"Tempo total de processamento: {time.time() - tempo_inicial:.2f} s\n")

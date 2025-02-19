@@ -38,6 +38,7 @@ class Dijkstra:
                     self.anterior[vizinho] = no_atual
                     # Adiciona o nó vizinho na fila
                     fila.add(vizinho)
+        
 
     def reconstruir_caminho(self, destino):
         caminho = ListaEncadeada.ListaEncadeada()
