@@ -1,6 +1,5 @@
 import argparse
 from utils.preprocess_text import PROCESSAMENTO_DE_TEXTO
-import models
 from models import AlgoritmoDjastra, sortPaths
 import time
 
@@ -17,7 +16,10 @@ if __name__ == "__main__":
         raise FileNotFoundError(f"Arquivo de entrada não é válido ou não encontrado! Tente novamente!")
 
     # Lê o arquivo de entrada
+    ## Estimar o tempo para ler o arquivo
+    tempo_inicial = time.time()
     origem, grafo = PROCESSAMENTO_DE_TEXTO.ler_arquivo_de_entrada(args.entrada)
+    print(f"Tempo para ler o arquivo: {(time.time()-tempo_inicial):.3f} seg\n")
     # Início da contagem de tempo do processamento 
     tempo_inicial = time.time()
     

@@ -3,7 +3,6 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import ListaEncadeada
-import No
 import Queue
 # models/dijkstra.py
 
@@ -41,13 +40,14 @@ class Dijkstra:
         
 
     def reconstruir_caminho(self, destino):
+        # O caminho a ser feito vai ser salvo, as sequências de nós, entre os dados
         caminho = ListaEncadeada.ListaEncadeada()
         atual = destino
         while atual is not None:
             caminho.adicionar(atual, self.distancias[atual])
             atual = self.anterior[atual]
         
-        # Extraímos os nós da lista encadeada para uma lista normal
+        # Extração dos nós da lista encadeada para uma lista normal
         lista_caminho = []
         temp = caminho.no_root
         while temp:
