@@ -13,14 +13,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if not args.entrada:
-        raise FileNotFoundError(f"Arquivo de entrada não é válido ou não encontrado! Tente novamente!")
+        raise FileNotFoundError("Arquivo de entrada não é válido ou não encontrado! Tente novamente!")
 
     # Lê o arquivo de entrada
-    ## Estimar o tempo para ler o arquivo
     tempo_inicial = time.time()
     origem, grafo = PROCESSAMENTO_DE_TEXTO.ler_arquivo_de_entrada(args.entrada)
     print(f"Tempo para ler o arquivo: {(time.time()-tempo_inicial):.3f} seg\n")
-    # Início da contagem de tempo do processamento 
+    
     tempo_inicial = time.time()
     
     # Instancia o algoritmo de Dijkstra
@@ -34,18 +33,22 @@ if __name__ == "__main__":
     for destino in grafo:
         caminho = dijkstra.reconstruir_caminho(destino)
         distancia = dijkstra.distancias[destino]
-        
-        # resultados.append(f"SHORTEST PATH TO {destino}: {' <- '.join(caminho)} (Distance: {distancia:.2f})")
         resultados.append({"destino": destino, "caminho": caminho, "distancia": distancia})
 
     # Ordenar os resultados antes de escrever no arquivo de saída
     resultados_ordenados = sortPaths.sort_order_nos(resultados)
 
     # Criar a lista formatada para escrita no arquivo
-    resultados_formatados = [
-        f"SHORTEST PATH TO {item['destino']}: {' <- '.join(item['caminho'])} (Distance: {item['distancia']:.2f})"
-        for item in resultados_ordenados
-    ]
+    resultados_formatados = []
+    for item in resultados_ordenados:
+        # Se o caminho for None ou vazio, usa mensagem alternativa
+        if item['caminho'] is None or len(item['caminho']) == 0:
+            caminho_str = "Sem caminho disponível"
+        else:
+            # Converte cada nó para string e junta com " <- "
+            caminho_str = " <- ".join(map(str, item['caminho']))
+        linha = f"SHORTEST PATH TO {item['destino']}: {caminho_str} (Distance: {item['distancia']:.2f})"
+        resultados_formatados.append(linha)
 
     # Escreve os resultados no arquivo de saída
     PROCESSAMENTO_DE_TEXTO.escrever_saida(args.saida, resultados_formatados)
