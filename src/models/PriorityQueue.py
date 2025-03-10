@@ -1,17 +1,49 @@
-import os
-import sys
-import heapq  # Importa a biblioteca para fila de prioridade
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-# Implementação de uma fila de prioridade com a mesma interface (add, pop, esta_vazia)
-class PriorityQueue:
+class Node:
+    def __init__(self, priority, item):
+        self.priority = priority  # Distância do nó (menor valor = maior prioridade)
+        self.item = item          # Nome ou identificador do nó
+        self.left = None
+        self.right = None
+
+class QueueWithPriority:
     def __init__(self):
-        self.elements = []
-    
-    def add(self, item, priority):
-        heapq.heappush(self.elements, (priority, item))
-    
+        self.root = None
+
+    def add_element(self, item, priority):
+        """Adiciona um nó na fila de prioridade."""
+        new_node = Node(priority, item)
+        if not self.root:
+            self.root = new_node
+        else:
+            self._add(self.root, new_node)
+
+    def _add(self, current, new_node):
+        """Insere um novo nó na posição correta da árvore."""
+        if new_node.priority < current.priority:  # Se a prioridade for menor, insere à esquerda
+            if current.left is None:
+                current.left = new_node
+            else:
+                self._add(current.left, new_node)
+        else:  # Se a prioridade for maior ou igual, insere à direita
+            if current.right is None:
+                current.right = new_node
+            else:
+                self._add(current.right, new_node)
+
     def pop(self):
-        return heapq.heappop(self.elements)[1]
-    
-    def esta_vazia(self):
-        return len(self.elements) == 0
+        """Remove e retorna o nó com a menor distância (maior prioridade)."""
+        if self.root is None:
+            raise IndexError("A fila está vazia")
+
+        self.root, min_node = self._remove_min(self.root)
+        return min_node.item  # Retorna apenas o nome do nó removido
+
+    def _remove_min(self, node):
+        """Encontra e remove o nó com a menor prioridade (nó mais à esquerda)."""
+        if node.left is None:
+            return node.right, node  # Retorna o filho direito para substituir o nó removido
+        node.left, min_node = self._remove_min(node.left)
+        return node, min_node
+
+    def is_empty(self):
+        return self.root is None

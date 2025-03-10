@@ -22,15 +22,17 @@ class Dijkstra:
         self.distancias[origem] = 0
 
         # Usa a fila de prioridade em vez da fila simples
-        fila = PriorityQueue.PriorityQueue()
-        fila.add(origem, self.distancias[origem])
+        fila = PriorityQueue.QueueWithPriority()
+        fila.add_element(origem, self.distancias[origem])
 
         # Processa enquanto a fila não estiver vazia
-        while not fila.esta_vazia():
+        while not fila.is_empty():
             # Remove o nó com a menor distância (prioridade)
             no_atual = fila.pop()
             if no_atual in self.nos_visitados:
                 continue
+
+            # Somente marca como visitado depois de processá-lo corretamente
             self.nos_visitados.add(no_atual)
 
             for vizinho, custo in self.grafo[no_atual].items():
@@ -38,8 +40,7 @@ class Dijkstra:
                 if nova_distancia < self.distancias[vizinho]:
                     self.distancias[vizinho] = nova_distancia
                     self.anterior[vizinho] = no_atual
-                    # Adiciona o nó vizinho na fila com sua nova distância como prioridade
-                    fila.add(vizinho, self.distancias[vizinho])
+                    fila.add_element(vizinho, nova_distancia)  # Reinsere com nova prioridade
         
     def reconstruir_caminho(self, destino):
         # O caminho será salvo em uma lista encadeada

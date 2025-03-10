@@ -50,6 +50,7 @@ if __name__ == "__main__":
         linha = f"SHORTEST PATH TO {item['destino']}: {caminho_str} (Distance: {item['distancia']:.2f})"
         resultados_formatados.append(linha)
 
+
     # Escreve os resultados no arquivo de saída
     PROCESSAMENTO_DE_TEXTO.escrever_saida(args.saida, resultados_formatados)
 
