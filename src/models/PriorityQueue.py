@@ -10,7 +10,7 @@ class QueueWithPriority:
         self.root = None
 
     def add_element(self, item, priority):
-        """Adiciona um nó na fila de prioridade."""
+        ## Adiciona um nó na fila
         new_node = Node(priority, item)
         if not self.root:
             self.root = new_node
@@ -18,7 +18,7 @@ class QueueWithPriority:
             self._add(self.root, new_node)
 
     def _add(self, current, new_node):
-        """Insere um novo nó na posição correta da árvore."""
+        ## Insere um novo nó
         if new_node.priority < current.priority:  # Se a prioridade for menor, insere à esquerda
             if current.left is None:
                 current.left = new_node
@@ -31,7 +31,7 @@ class QueueWithPriority:
                 self._add(current.right, new_node)
 
     def pop(self):
-        """Remove e retorna o nó com a menor distância (maior prioridade)."""
+        ## Remove e retorna o nó com a menor distância
         if self.root is None:
             raise IndexError("A fila está vazia")
 
@@ -39,7 +39,7 @@ class QueueWithPriority:
         return min_node.item  # Retorna apenas o nome do nó removido
 
     def _remove_min(self, node):
-        """Encontra e remove o nó com a menor prioridade (nó mais à esquerda)."""
+        ## Encontra e remove o nó com a menor prioridade (nó mais à esquerda).
         if node.left is None:
             return node.right, node  # Retorna o filho direito para substituir o nó removido
         node.left, min_node = self._remove_min(node.left)

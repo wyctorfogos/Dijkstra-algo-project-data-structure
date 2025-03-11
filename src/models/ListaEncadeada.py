@@ -1,37 +1,30 @@
-# models/lista_encadeada.py
-import os
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-import No
+class No:
+    def __init__(self, no, distancia):
+        self.no = no
+        self.distancia = distancia
+        self.proximo = None
 
 class ListaEncadeada:
     def __init__(self):
-        self.no_root = None
-        self.length = self.length()
-        
+        self.no_root = None  # Raiz da lista (início da sequência)
+        self._length = 0  # Contador de elementos da lista
+
     def adicionar(self, no, distancia):
-        novo_no = No.No(no, distancia)
-        if not self.no_root:
-            self.no_root = novo_no
-        else:
-            # Verifico o primeiro nó da lista
-            temp = self.no_root
-            while temp.proximo:
-                temp = temp.proximo
-            temp.proximo = novo_no
+        ## Adiciona um nó com base na distância
+        novo_no = No(no, distancia)
+        # O novo nó aponta para o antigo primeiro nó
+        novo_no.proximo = self.no_root  
+        self.no_root = novo_no  # O novo nó vira a nova raiz
+        self._length += 1  
 
     def exibir(self):
+        ## Mostra a lista encadeada.
         temp = self.no_root
         while temp:
             print(f"{temp.no} (Distância: {temp.distancia})", end=" -> ")
             temp = temp.proximo
+        print("None")  # Indica o fim da lista
 
     def length(self):
-        if self.no_root is None:
-            return 0
-        # Contagem do zero
-        count=0
-        while self.no_root:
-            count+=1
-            temp = temp.proximo
-        return count
+        ## Retorna o tamanho da lista encadeada sem modificar `self.no_root`
+        return self._length  # Agora é um atributo atualizado dinamicamente

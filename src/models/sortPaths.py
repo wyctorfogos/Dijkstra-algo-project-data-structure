@@ -1,7 +1,5 @@
 def sort_order_nos(list_of_unsorted_nos):
-    """
-    Ordena a lista de nós com base na chave 'distancia' em ordem crescente
-    """
+    ##  Ordena a lista de nós com base na chave 'distancia' em ordem crescente
     n = len(list_of_unsorted_nos)
     
     for i in range(n):

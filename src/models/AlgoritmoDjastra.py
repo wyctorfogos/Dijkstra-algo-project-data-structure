@@ -5,7 +5,6 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import ListaEncadeada
 import Queue, PriorityQueue
 # models/dijkstra.py
-import heapq  # Necessário para usar a fila de prioridade
 
 # models/dijkstra.py
 class Dijkstra:
@@ -16,31 +15,31 @@ class Dijkstra:
         self.nos_visitados = set()  # Nós já visitados
 
     def calcular(self, origem):
+        # Inicializa as distâncias
         for no in self.grafo:
-            self.distancias[no] = float('inf')  # Define todas as distâncias como infinitas
-            self.anterior[no] = None  # Nenhum caminho anterior ainda
+            self.distancias[no] = float('inf')
+            self.anterior[no] = None
         self.distancias[origem] = 0
 
-        # Usa a fila de prioridade em vez da fila simples
+        # Fila de prioridade (heapq)
         fila = PriorityQueue.QueueWithPriority()
-        fila.add_element(origem, self.distancias[origem])
+        fila.add_element(origem, 0)  # Origem com distância 0
 
-        # Processa enquanto a fila não estiver vazia
         while not fila.is_empty():
-            # Remove o nó com a menor distância (prioridade)
-            no_atual = fila.pop()
+            no_atual = fila.pop()  
+
             if no_atual in self.nos_visitados:
                 continue
 
-            # Somente marca como visitado depois de processá-lo corretamente
             self.nos_visitados.add(no_atual)
 
             for vizinho, custo in self.grafo[no_atual].items():
                 nova_distancia = self.distancias[no_atual] + custo
+
                 if nova_distancia < self.distancias[vizinho]:
                     self.distancias[vizinho] = nova_distancia
                     self.anterior[vizinho] = no_atual
-                    fila.add_element(vizinho, nova_distancia)  # Reinsere com nova prioridade
+                    fila.add_element(vizinho, nova_distancia)
         
     def reconstruir_caminho(self, destino):
         # O caminho será salvo em uma lista encadeada

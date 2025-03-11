@@ -19,7 +19,6 @@ if __name__ == "__main__":
     tempo_inicial = time.time()
     origem, grafo = PROCESSAMENTO_DE_TEXTO.ler_arquivo_de_entrada(args.entrada)
     print(f"Tempo para ler o arquivo: {(time.time()-tempo_inicial):.3f} seg\n")
-    
     tempo_inicial = time.time()
     
     # Instancia o algoritmo de Dijkstra
@@ -45,11 +44,10 @@ if __name__ == "__main__":
         if item['caminho'] is None or len(item['caminho']) == 0:
             caminho_str = "Sem caminho disponível"
         else:
-            # Converte cada nó para string e junta com " <- "
-            caminho_str = " <- ".join(map(str, item['caminho']))
+            # Converte cada nó para string e junta com " <- ", garantindo a ordem correta
+            caminho_str = " <- ".join(map(str, reversed(item['caminho'])))
         linha = f"SHORTEST PATH TO {item['destino']}: {caminho_str} (Distance: {item['distancia']:.2f})"
         resultados_formatados.append(linha)
-
 
     # Escreve os resultados no arquivo de saída
     PROCESSAMENTO_DE_TEXTO.escrever_saida(args.saida, resultados_formatados)

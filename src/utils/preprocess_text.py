@@ -1,42 +1,58 @@
-# utils/preprocess_text.py
-
 class PROCESSAMENTO_DE_TEXTO:
     @staticmethod
     def ler_arquivo_de_entrada(caminho_entrada):
         try:
             with open(caminho_entrada, 'r') as arquivo:
-                linhas = arquivo.readlines()
-            
-            origem = linhas[0].strip()  # O primeiro nó é o ponto de origem
+                linhas = [linha.strip() for linha in arquivo.readlines()]
+
+            origem = linhas[0].strip()
+            nomes_nos = []  # Lista de nós identificados no arquivo
             grafo = {}
 
+            # Captura os nomes dos nós e inicializa o grafo
             for linha in linhas[1:]:
-                dados = linha.strip().split(', ')
+                dados = linha.split(', ')
+                nome_no = dados[0]
+                nomes_nos.append(nome_no)
+                grafo[nome_no] = {}
+
+            # Gera automaticamente o dicionário de mapeamento para qualquer número de nós
+            mapeamento = {}
+            for i, no_atual in enumerate(nomes_nos):
+                nos_destino = nomes_nos[:i] + nomes_nos[i+1:]  # Remove o próprio nó da lista
+                mapeamento[no_atual] = nos_destino
+
+            # Processamento das conexões
+            for i, linha in enumerate(linhas[1:]):
+                dados = linha.split(', ')
                 no_atual = dados[0]
+                colunas = dados[1:]  # Valores de distância
 
-                # Verificar se há todos os dados são válidos
-                dados_verificados =[]
-                for elem in dados[1:]:
+                if no_atual in mapeamento:
+                    nos_destino = mapeamento[no_atual]
+                else:
+                    continue  # Ignora nós não identificados
+
+                for j, valor in enumerate(colunas):
                     try:
-                        valor = float(elem)  # Tenta converter para float
+                        dist_aresta = float(valor)
                     except ValueError:
-                        valor = float('inf')  # Se não for número, define como infinito
-                    
-                    dados_verificados.append(valor)
+                        # A distância entre os nós deve ser infinita, porque não tem conexão entre eles
+                        dist_aresta = float('inf')
+                        pass
 
-                distancias = list(map(float, dados_verificados))  # Converte as distâncias para float
-                
-                vizinhos = {}
-                for i, dist in enumerate(distancias):
-                    if dist > 0:  # Ignora distâncias 0 (sem conexão direta)
-                        vizinhos[f'node_{i}'] = dist
+                    # Obtém o nó vizinho correto
+                    no_vizinho = nos_destino[j]  
+                    if dist_aresta>0:
+                        # Conexão no_atual -> no_vizinho
+                        grafo[no_atual][no_vizinho] = dist_aresta  
 
-                grafo[no_atual] = vizinhos
 
             return origem, grafo
+
         except Exception as e:
-            print(f"Erro ao tentar ler/processar o arquivo de entrada. Erro: {e}\n")
-            assert FileNotFoundError
+            print(f"Erro ao processar o arquivo: {e}")
+            return None, {}
 
     @staticmethod
     def escrever_saida(caminho_saida, resultados):
@@ -46,4 +62,3 @@ class PROCESSAMENTO_DE_TEXTO:
                     arquivo.write(resultado + "\n")
         except Exception as e:
             print(f"Erro ao escrever o texto de saida.txt. Erro:{e}")
-            
