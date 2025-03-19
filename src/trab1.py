@@ -18,14 +18,17 @@ if __name__ == "__main__":
     # Lê o arquivo de entrada
     tempo_inicial = time.time()
     origem, grafo = PROCESSAMENTO_DE_TEXTO.ler_arquivo_de_entrada(args.entrada)
-    print(f"Tempo para ler o arquivo: {(time.time()-tempo_inicial):.3f} seg\n")
-    tempo_inicial = time.time()
+    # print(f"Nó de origem: {origem}. Grafo a ser usado Dijkstra:{grafo}\n")
+    print(f"Tempo para ler o arquivo: {(time.time()-tempo_inicial):.4f} seg\n")
+    tempo_inicial_dijstra = time.time()
     
     # Instancia o algoritmo de Dijkstra
     dijkstra = AlgoritmoDjastra.Dijkstra(grafo)
 
     # Calcula os caminhos mínimos a partir do nó de origem
     dijkstra.calcular(origem)
+
+    print(f"Tempo para calcular Dijkstra: {(time.time()-tempo_inicial_dijstra):.4f} seg\n")
 
     # Gerando os resultados para escrever no arquivo de saída
     resultados = []
@@ -46,11 +49,11 @@ if __name__ == "__main__":
         else:
             # Converte cada nó para string e junta com " <- ", garantindo a ordem correta
             caminho_str = " <- ".join(map(str, reversed(item['caminho'])))
-        linha = f"SHORTEST PATH TO {item['destino']}: {caminho_str} (Distance: {item['distancia']:.2f})"
+        linha = f"SHORTEST PATH TO {item['destino']}: {caminho_str} (Distance: {item['distancia']:.4f})"
         resultados_formatados.append(linha)
 
     # Escreve os resultados no arquivo de saída
     PROCESSAMENTO_DE_TEXTO.escrever_saida(args.saida, resultados_formatados)
 
     print("Cálculo dos caminhos mínimos concluído!")
-    print(f"Tempo total de processamento: {time.time() - tempo_inicial:.2f} s\n")
+    print(f"Tempo total de processamento: {time.time() - tempo_inicial:.4f} s\n")
