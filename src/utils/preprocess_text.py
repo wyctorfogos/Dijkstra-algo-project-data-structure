@@ -1,3 +1,6 @@
+# Wyctor Fogos da Rocha
+# matrícula: 2024230514
+
 class PROCESSAMENTO_DE_TEXTO:
     @staticmethod
     def ler_arquivo_de_entrada(caminho_entrada):
@@ -6,7 +9,8 @@ class PROCESSAMENTO_DE_TEXTO:
                 linhas = [linha.strip() for linha in arquivo.readlines()]
 
             origem = linhas[0].strip()
-            nomes_nos = []  # Lista de nós identificados no arquivo
+            # Lista de nós identificados no arquivo
+            nomes_nos = []  
             grafo = {}
 
             # Captura os nomes dos nós e inicializa o grafo
@@ -19,19 +23,22 @@ class PROCESSAMENTO_DE_TEXTO:
             # Gera automaticamente o dicionário de mapeamento para qualquer número de nós
             mapeamento = {}
             for i, no_atual in enumerate(nomes_nos):
-                nos_destino = nomes_nos[:i] + nomes_nos[i+1:]  # Remove o próprio nó da lista
+                # Remove o próprio nó da lista
+                nos_destino = nomes_nos[:i] + nomes_nos[i+1:]  
                 mapeamento[no_atual] = nos_destino
 
             # Processamento das conexões
             for i, linha in enumerate(linhas[1:]):
                 dados = linha.split(', ')
                 no_atual = dados[0]
-                colunas = dados[1:]  # Valores de distância
+                # Valores de distância
+                colunas = dados[1:]  
 
                 if no_atual in mapeamento:
                     nos_destino = mapeamento[no_atual]
                 else:
-                    continue  # Ignora nós não identificados
+                    # Ignora nós não identificados
+                    continue  
 
                 for j, valor in enumerate(colunas):
                     try:

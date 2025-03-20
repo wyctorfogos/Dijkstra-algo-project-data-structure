@@ -1,3 +1,6 @@
+# Wyctor Fogos da Rocha
+# matrícula: 2024230514
+
 import argparse
 from utils.preprocess_text import PROCESSAMENTO_DE_TEXTO
 from models import AlgoritmoDjastra, sortPaths

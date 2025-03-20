@@ -1,3 +1,6 @@
+# Wyctor Fogos da Rocha
+# matrícula: 2024230514
+
 import argparse
 import time
 import numpy as np
@@ -6,11 +9,8 @@ from scipy.sparse.csgraph import dijkstra
 from utils.preprocess_text import PROCESSAMENTO_DE_TEXTO
 
 def graph_dict_to_matrix(grafo):
-    """
-    Converte um grafo no formato de dicionário para uma matriz de adjacência.
-    Para arestas inexistentes, utiliza np.inf; a diagonal recebe 0.
-    Retorna a matriz no formato CSR, o mapeamento de nó -> índice e a lista ordenada de nós.
-    """
+    ## Converte um grafo no formato de dicionário para uma matriz de adjacência.
+    
     # Obter todos os nós (chaves e vizinhos)
     nodes = set(grafo.keys())
     for vizinhos in grafo.values():
@@ -33,11 +33,7 @@ def graph_dict_to_matrix(grafo):
     return csr_array(M), node_to_idx, nodes
 
 def reconstruct_path(predecessors, source_idx, dest_idx):
-    """
-    Reconstrói o caminho do destino até a origem utilizando o vetor de predecessores.
-    Retorna a lista de índices do caminho, na ordem: [destino, ..., origem].
-    Se não houver caminho, retorna lista vazia.
-    """
+    ## Reconstrói o caminho do destino até a origem utilizando o vetor de predecessores.
     if dest_idx == source_idx:
         return [source_idx]
 
@@ -45,11 +41,13 @@ def reconstruct_path(predecessors, source_idx, dest_idx):
     current = dest_idx
     while current != source_idx:
         if current == -9999:
-            return []  # Sem caminho disponível
+            # Sem caminho disponível
+            return []  
         path.append(current)
         current = predecessors[current]
     path.append(source_idx)
-    return path  # A ordem é: destino <- ... <- origem
+    # A ordem é: destino <- ... <- origem
+    return path  
 
 if __name__ == "__main__":
     # Definir argumentos do terminal

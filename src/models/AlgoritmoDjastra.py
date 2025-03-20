@@ -1,18 +1,23 @@
-
+# Wyctor Fogos da Rocha
+# matrícula: 2024230514
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import ListaEncadeada
-import Queue, PriorityQueue
+import PriorityQueue
 # models/dijkstra.py
 
 # models/dijkstra.py
 class Dijkstra:
     def __init__(self, grafo):
-        self.grafo = grafo  # Grafo representado como um dicionário
-        self.distancias = {}  # Distâncias mínimas dos nós
-        self.anterior = {}  # Caminhos anteriores
-        self.nos_visitados = set()  # Nós já visitados
+        # Grafo representado como um dicionário
+        self.grafo = grafo  
+        # Distâncias mínimas dos nós
+        self.distancias = {}
+        # Caminhos anteriores  
+        self.anterior = {}  
+        # Nós já visitados
+        self.nos_visitados = set()  
 
     def calcular(self, origem):
         # Inicializa as distâncias
@@ -21,9 +26,10 @@ class Dijkstra:
             self.anterior[no] = None
         self.distancias[origem] = 0
 
-        # Fila de prioridade (heapq)
+        # Fila de prioridade
         fila = PriorityQueue.QueueWithPriority()
-        fila.add_element(origem, 0)  # Origem com distância 0
+        # Origem com distância 0
+        fila.add_element(origem, 0)  
 
         while not fila.is_empty():
             no_atual = fila.pop()  
